@@ -6,6 +6,13 @@ let unreads = 0
 let chatSound = new Audio('./recieveOn.mp3')
 let onServer = false
 const socket = io()
+const zero10 = (number) => {
+    if(number < 10){
+        return '0'+ number
+    }else{
+        return number
+    }
+}
 const sendMessage = (msg) => {
     if(msg.replace(/ /gi,"").length == 0){
         alert("Can't send empty messages!!!")
@@ -15,11 +22,14 @@ const sendMessage = (msg) => {
         alert("Ooops! Big messages!!!")
         return
     }
+    msg = msg.replace(/\n/gi,'<br>')
+    var D = new Date()
     var textChat = document.getElementsByClassName("chatBody")[0]
     textChat.innerHTML += `
     <div class="messages sentMsg">
         <div class="Content">
             <p>${msg}</p>
+            <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
         </div>
     </div>`
     messageInput.value = ""
@@ -52,12 +62,14 @@ socket.on('client-message', (data) => {
             if(data.from === emits.value){
                 return
             }
+            var D = new Date()
             var textChat = document.getElementsByClassName("chatBody")[0]
             textChat.innerHTML += `
             <div class="messages recievedMsg">
                 <div class="Content">
                 <h5 style="color: ${selectColor(data.from[0])}">${data.from}</h5>
                 <p>${data.message}</p>
+                <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
                 </div>
             </div>`
             if(!onMonitoring){
@@ -70,11 +82,13 @@ socket.on('client-message', (data) => {
         if(data.isOnServer){return}
         if(data.to === emits.value){
             if(data.from === listens.value){
+                var D = new Date()
                 var textChat = document.getElementsByClassName("chatBody")[0]
                 textChat.innerHTML += `
                 <div class="messages recievedMsg">
                     <div class="Content">
                         <p>${data.message}</p>
+                        <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
                     </div>
                 </div>`
                 if(!onMonitoring){
@@ -92,10 +106,15 @@ socket.on('client-message', (data) => {
     //console.log(data)
 })
 messageInput.addEventListener('keydown', (event) => {
-if (event.key === 'Enter') {
-    sendMessage(messageInput.value)
-    // Perform desired actions here
-}
+    if (event.keyCode == 13 && event.shiftKey) {
+        return
+    }else{
+        if (event.key === 'Enter') {
+            sendMessage(messageInput.value)
+            event.preventDefault();
+            // Perform desired actions here
+        }
+    }
 })
 if(document.addEventListener){
     document.addEventListener("visibilitychange", function(event) {
@@ -145,7 +164,7 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
             </div>
         </div>
         <div class="messages recievedMsg">
@@ -182,7 +201,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
             </div>
         </div>
         <div class="messages holdingdMsg">
@@ -194,7 +213,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
             </div>
         </div>`
     }
