@@ -34,7 +34,7 @@
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V5.0</p>
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V5.2</p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                 <label for="">Client</label>
             </td>
             <td>
-                <input type="text" id="listens" oninput="theirName.innerHTML = this.value">
+                <input type="text" id="listens" oninput="theirName.innerHTML = this.value; this.value = lowerCase(this.value)">
             </td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@
                 <label for="">You...</label>
             </td>
             <td>
-                <input type="text" id="emits">
+                <input type="text" id="emits" oninput="this.value = lowerCase(this.value)">
             </td>
         </tr>
     </table>
@@ -68,6 +68,9 @@
     <br><br> -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        const lowerCase = (text) => {
+            return text.replace(/ /gi,'').toLowerCase()
+        }
         let onMonitoring = true
         let unreads = 0
         let chatSound = new Audio('./recieveOn.mp3')
@@ -114,7 +117,7 @@
                     chatSound.play()
                     //console.log('Received :', data.message);
                 }else{
-                    eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, '#55f', 3000)
+                    eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, '#55f', 30000)
                 }
             }
         })
@@ -175,6 +178,10 @@
                 listens.value = returnData
                 theirName.innerHTML = returnData
              })
+            if(!onMonitoring){
+                title.innerHTML = listens.value.toUpperCase() + " is inviting..."
+            }
+            chatSound.play()
         }
     </script>
 </body>
