@@ -17,7 +17,7 @@
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.8</p>
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                     textChat.scrollTo(0, textChat.scrollHeight);
                     if(!onMonitoring){
                         unreads++
-                        title.innerHTML = "New Messages (" +unreads+ ")"
+                        title.innerHTML = to.value.toUpperCase() + " New (" +unreads+ ")"
                     }
                     chatSound.play()
                     //console.log('Received :', data.message);
