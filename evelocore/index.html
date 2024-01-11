@@ -90,7 +90,7 @@
     <br><br> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost:3000')
+        const socket = io('http://localhost:443')
         const sendMessage = (msg) => {
             if(msg.replace(/ /gi,"").length == 0){
                 alert("Can't send empty messages!")
