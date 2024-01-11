@@ -44,7 +44,10 @@ const selectColor = (char) => {
 }
 socket.on('client-message', (data) => {
     if(onServer){
-        if(!data.isOnServer){return}
+        if(!data.isOnServer){
+            eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, data.message, '#55f', 10000)
+            return
+        }
         if(data.to === listens.value){
             if(data.from === emits.value){
                 return
@@ -132,6 +135,10 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
     //notification.style.boxShadow = "00 1px 5px 1px "+colour
     notificationContain.classList.add("primary-notification-popup")
     setTimeout(eveloCoreAlert,duration)
+    chatSound.play()
+    if(!onMonitoring){
+        title.innerHTML = returnData.toUpperCase() + " is inviting..."
+    }
     document.getElementById("primary-notification-cancel").addEventListener("click", ()=>{ eveloCoreAlert() })
     document.getElementById("primary-notification-got").addEventListener("click", ()=>{ 
         var textChat = document.getElementsByClassName("chatBody")[0]
@@ -149,13 +156,15 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         messageInput.value = ""
         listens.value = returnData
         theirName.innerHTML = returnData
+        notificationContain.classList.remove("primary-notification-popup")
+        //chatServerOpen()
+        document.getElementById("chatServerOpenBtn").innerText = "Join A Chat Server"
+        serverLabel.innerHTML = "Client"
+        onServer = false
      })
-    if(!onMonitoring){
-        title.innerHTML = returnData.toUpperCase() + " is inviting..."
-    }
-    chatSound.play()
 }
 const chatServerOpen = (btn) => {
+    btn = document.getElementById("chatServerOpenBtn")
     if(!onServer){
         btn.innerText = "Join A Personal Chat"
         serverLabel.innerHTML = "Server"

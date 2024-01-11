@@ -127,6 +127,9 @@
     overflow-wrap: break-word;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+p {
+    overflow-wrap: break-word;
+}
 .chatBody .messages .Content h5 {
     color: #00aeff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -138,6 +141,7 @@
 .chatBody .holdingdMsg p {
     padding: 5px 10px;
     border-radius: 10px;
+    text-align: center;
     background-color: black;
     color: rgb(180, 180, 180);
     font-family: 'Font01';
@@ -153,7 +157,7 @@
     border-radius: 25px;
 }
 ::-webkit-scrollbar-thumb {
-    background: #000000;
+    background: #000000ee;
     width: 5px;
     border-radius: 50px;
 }
