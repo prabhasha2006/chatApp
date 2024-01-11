@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./chatroom.css">
-    <title>Document</title>
+    <title id="title">EveloCore Chat</title>
 </head>
 <body>
     <div class="menu menu-2">
@@ -16,7 +16,7 @@
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.5</p>
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.8</p>
                 </div>
             </div>
         </div>
@@ -50,6 +50,9 @@
     <br><br> -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        let onMonitoring = true
+        let unreads = 0
+        let chatSound = new Audio('./recieveOn.mp3')
         const socket = io()
         const sendMessage = (msg) => {
             if(msg.replace(/ /gi,"").length == 0){
@@ -72,6 +75,7 @@
                 to: listens.value || "b",
                 message: msg
             })
+            chatSound.play()
         }
         socket.on('client-message', (data) => {
             //console.log(data)
@@ -85,7 +89,12 @@
                         </div>
                     </div>`
                     textChat.scrollTo(0, textChat.scrollHeight);
-                    console.log('Received :', data.message);
+                    if(!onMonitoring){
+                        unreads++
+                        title.innerHTML = "New Messages (" +unreads+ ")"
+                    }
+                    chatSound.play()
+                    //console.log('Received :', data.message);
                 }
             }
         })
@@ -95,6 +104,24 @@
             // Perform desired actions here
         }
         })
+        if(document.addEventListener){
+            document.addEventListener("visibilitychange", function(event) {
+                //console.log(event)
+                if(document.visibilityState == 'hidden') {
+                    // page is hidden
+                    console.log("onMonitoring = false")
+                    onMonitoring = false
+                    chatSound = new Audio('./recieveOff.mp3')
+                } else {
+                    // page is visible
+                    console.log("onMonitoring = true")
+                    unreads = 0
+                    onMonitoring = true
+                    chatSound = new Audio('./recieveOn.mp3')
+                    title.innerHTML = listens.value.toUpperCase() + " ONLINE"
+                }
+            });
+        }
     </script>
 </body>
 </html>
