@@ -6,7 +6,7 @@
 .menu-2 {
     display: flex;
     flex-direction: column;
-    height: 88vh;
+    height: 100vh;
     background-color: rgb(0, 4, 22);
 }
 @font-face {
@@ -25,7 +25,6 @@
     height: 50px;
     margin: 5px 10px;
     border-radius: 50px;
-    margin-top: 25px;
     border: 5px solid #0059ff;
 }
 .chatHeader h2 {
@@ -95,6 +94,8 @@
     margin: 10px;
     background-color: rgba(137, 43, 226, 0);
     display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 .chatBody .recievedMsg {
     display: flex;
@@ -106,7 +107,6 @@
 .chatBody .recievedMsg .Content {
     max-width: 75%;
     padding: 10px;
-    display: flex;
     background-color: rgb(0, 60, 75);
     color: white;
     border-radius: 10px;
@@ -124,6 +124,10 @@
 .chatBody .messages .Content p {
     margin: 0px;
     text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.chatBody .messages .Content h5 {
+    color: #00aeff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .chatBody .holdingdMsg {

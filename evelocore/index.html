@@ -5,10 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./chatroom.css">
     <link rel="stylesheet" href="./notification.css">
+    <link rel="stylesheet" href="./homescreen.css">
     <link rel="icon" href="./evelocoreLogo.png">
     <title id="title">EveloCore Chat</title>
 </head>
 <body>
+    <div class="homescreen">
+        <button class="changeChat" onclick="chatServerOpen(this)">Join A Chat Server</button>
+        <table>
+            <tr>
+                <td>
+                    <label id="serverLabel">Client</label>
+                </td>
+                <td>
+                    <input type="text" id="listens" oninput="theirName.innerHTML = this.value; this.value = lowerCase(this.value)">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">You...</label>
+                </td>
+                <td>
+                    <input type="text" id="emits" oninput="this.value = lowerCase(this.value)">
+                </td>
+            </tr>
+        </table>
+        <button class="changeChat" onclick="enterChat()">Enter</button>
+    </div>
     <!--primary-notification-->
     <div class="primary-notification">
         <div class="primary-notification-contain">
@@ -29,12 +52,12 @@
         <div class="chatHeader">
             <img src="https://cdn-icons-png.flaticon.com/512/11498/11498793.png">
             <h2 id="theirName">Client's Name</h2>
-            <img class="signalImage" src="https://cdn-icons-png.flaticon.com/512/5655/5655457.png">
+            <img class="signalImage" src="https://cdn-icons-png.flaticon.com/512/709/709624.png"  onclick="document.getElementsByClassName('homescreen')[0].style.display = 'flex'">
         </div>
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V5.3</p>
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V5.4</p>
                 </div>
             </div>
         </div>
@@ -45,149 +68,10 @@
             </a>
         </div>
     </div>
-    <table>
-        <tr>
-            <td>
-                <label for="">Client</label>
-            </td>
-            <td>
-                <input type="text" id="listens" oninput="theirName.innerHTML = this.value; this.value = lowerCase(this.value)">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="">You...</label>
-            </td>
-            <td>
-                <input type="text" id="emits" oninput="this.value = lowerCase(this.value)">
-            </td>
-        </tr>
-    </table>
     <!-- <input type="text" id="input">
     <button onclick="sendMessage(input.value || 'Null Value')">Send</button>
     <br><br> -->
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const lowerCase = (text) => {
-            return text.replace(/ /gi,'').toLowerCase()
-        }
-        let onMonitoring = true
-        let unreads = 0
-        let chatSound = new Audio('./recieveOn.mp3')
-        const socket = io()
-        const sendMessage = (msg) => {
-            if(msg.replace(/ /gi,"").length == 0){
-                alert("Can't send empty messages!!!")
-                return
-            }
-            var textChat = document.getElementsByClassName("chatBody")[0]
-            textChat.innerHTML += `
-            <div class="messages sentMsg">
-                <div class="Content">
-                    <p>${msg}</p>
-                </div>
-            </div>`
-            messageInput.value = ""
-            textChat.scrollTo(0, textChat.scrollHeight);
-            // Emit a custom event to the server
-            socket.emit('server-message', 
-            { 
-                from : emits.value || "a",
-                to: listens.value || "b",
-                message: msg
-            })
-            chatSound.play()
-        }
-        socket.on('client-message', (data) => {
-            //console.log(data)
-            if(data.to === emits.value){
-                if(data.from === listens.value){
-                    var textChat = document.getElementsByClassName("chatBody")[0]
-                    textChat.innerHTML += `
-                    <div class="messages recievedMsg">
-                        <div class="Content">
-                            <p>${data.message}</p>
-                        </div>
-                    </div>`
-                    textChat.scrollTo(0, textChat.scrollHeight);
-                    if(!onMonitoring){
-                        unreads++
-                        title.innerHTML = listens.value.toUpperCase() + " New (" +unreads+ ")"
-                    }
-                    chatSound.play()
-                    //console.log('Received :', data.message);
-                }else{
-                    eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, data.message, '#55f', 10000)
-                }
-            }
-        })
-        messageInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            sendMessage(messageInput.value)
-            // Perform desired actions here
-        }
-        })
-        if(document.addEventListener){
-            document.addEventListener("visibilitychange", function(event) {
-                //console.log(event)
-                if(document.visibilityState == 'hidden') {
-                    // page is hidden
-                    console.log("onMonitoring = false")
-                    onMonitoring = false
-                    chatSound = new Audio('./recieveOff.mp3')
-                } else {
-                    // page is visible
-                    console.log("onMonitoring = true")
-                    unreads = 0
-                    onMonitoring = true
-                    chatSound = new Audio('./recieveOn.mp3')
-                    title.innerHTML = listens.value.toUpperCase() + " ONLINE"
-                }
-            });
-        }
-        //notify
-        const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
-            duration = duration || 10000
-            var notificationContain = document.getElementsByClassName("primary-notification")[0]
-            if(!msg){
-                notificationContain.classList.remove("primary-notification-popup")
-                return
-            }
-            var notification = document.getElementById("primary-notification-text")
-            notification.innerHTML = msg
-            var notification = document.getElementById("primary-notification-head")
-            notification.style.color = colour
-            var notification = document.getElementById("primary-notification-got")
-            notification.style.color = colour
-            notification = document.getElementsByClassName("primary-notification-contain")[0]
-            notification.style.border = "4px solid "+colour
-            notification.style.borderLeft = "10px solid "+colour
-            //notification.style.boxShadow = "00 1px 5px 1px "+colour
-            notificationContain.classList.add("primary-notification-popup")
-            setTimeout(eveloCoreAlert,duration)
-            document.getElementById("primary-notification-cancel").addEventListener("click", ()=>{ eveloCoreAlert() })
-            document.getElementById("primary-notification-got").addEventListener("click", ()=>{ 
-                var textChat = document.getElementsByClassName("chatBody")[0]
-                textChat.innerHTML = `
-                <div class="messages holdingdMsg">
-                    <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
-                    </div>
-                </div>
-                <div class="messages recievedMsg">
-                    <div class="Content">
-                        <p>${returnMessage}</p>
-                    </div>
-                </div>`
-                messageInput.value = ""
-                listens.value = returnData
-                theirName.innerHTML = returnData
-             })
-            if(!onMonitoring){
-                title.innerHTML = returnData.toUpperCase() + " is inviting..."
-            }
-            chatSound.play()
-        }
-    </script>
+    <script src="./evelocore.js"></script>
 </body>
 </html>
