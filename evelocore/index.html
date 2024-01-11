@@ -108,9 +108,9 @@
             // Emit a custom event to the server
             socket.emit('server-message', 
             { 
-                message: msg,
                 from : emits.value || "a",
-                to: listens.value || "b"
+                to: listens.value || "b",
+                message: msg
             })
         }
         socket.on('client-message', (data) => {
