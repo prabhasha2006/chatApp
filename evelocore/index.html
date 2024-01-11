@@ -88,12 +88,12 @@
     <!-- <input type="text" id="input">
     <button onclick="sendMessage(input.value || 'Null Value')">Send</button>
     <br><br> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost:443')
+        const socket = io()
         const sendMessage = (msg) => {
             if(msg.replace(/ /gi,"").length == 0){
-                alert("Can't send empty messages!")
+                alert("Can't send empty messages!!!")
                 return
             }
             var textChat = document.getElementsByClassName("chatBody")[0]
