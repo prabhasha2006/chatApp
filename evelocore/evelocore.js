@@ -30,7 +30,7 @@ const sendMessage = (msg) => {
     <div class="messages sentMsg">
         <div class="Content">
             <p>${msg}</p>
-            <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
+            <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
         </div>
     </div>`
     messageInput.value = ""
@@ -70,7 +70,7 @@ socket.on('client-message', (data) => {
                 <div class="Content">
                 <h5 style="color: ${selectColor(data.from[0])}">${data.from}</h5>
                 <p>${data.message}</p>
-                <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
+                <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
                 </div>
             </div>`
             if(!onMonitoring){
@@ -89,7 +89,7 @@ socket.on('client-message', (data) => {
                 <div class="messages recievedMsg">
                     <div class="Content">
                         <p>${data.message}</p>
-                        <h4>${zero10(D.getMinutes())} : ${zero10(D.getSeconds())}</h4>
+                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
                     </div>
                 </div>`
                 if(!onMonitoring){
