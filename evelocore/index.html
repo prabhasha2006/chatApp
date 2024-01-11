@@ -16,7 +16,7 @@
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Continue your live conversation while playing...</p>
+                    <p>EveloCore fast chat app with web socket. V3</p>
                 </div>
             </div>
             <!-- <div class="messages recievedMsg">
@@ -123,10 +123,15 @@
                         <p>${data.message}</p>
                     </div>
                 </div>`
-                messageInput.value = ""
                 textChat.scrollTo(0, textChat.scrollHeight);
                 console.log('Received :', data.message);
             }
+        })
+        messageInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            sendMessage(messageInput.value)
+            // Perform desired actions here
+        }
         })
     </script>
 </body>
