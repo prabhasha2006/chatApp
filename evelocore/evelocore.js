@@ -4,6 +4,7 @@ const lowerCase = (text) => {
 let onMonitoring = true
 let unreads = 0
 let chatSound = new Audio('./recieveOn.mp3')
+chatSound.volume = .3
 let onServer = false
 const socket = io()
 const zero10 = (number) => {
@@ -124,12 +125,14 @@ if(document.addEventListener){
             console.log("onMonitoring = false")
             onMonitoring = false
             chatSound = new Audio('./recieveOff.mp3')
+            chatSound.volume = .3
         } else {
             // page is visible
             console.log("onMonitoring = true")
             unreads = 0
             onMonitoring = true
             chatSound = new Audio('./recieveOn.mp3')
+            chatSound.volume = .3
             title.innerHTML = listens.value.toUpperCase() + " ONLINE"
         }
     });
@@ -164,7 +167,7 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
             </div>
         </div>
         <div class="messages recievedMsg">
@@ -201,7 +204,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
             </div>
         </div>
         <div class="messages holdingdMsg">
@@ -213,7 +216,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.4</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
             </div>
         </div>`
     }

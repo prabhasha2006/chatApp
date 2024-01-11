@@ -11,7 +11,8 @@
 }
 .homescreen .changeChat {
     margin: 30px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(0, 110, 255);
+    color: white;
     padding: 10px 20px;
     border: 0px;
     border-radius: 10px;
