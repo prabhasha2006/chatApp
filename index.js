@@ -6,7 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
     cors: {
-      origin: 'http://localhost:4000',
+      origin: 'http://localhost:443',
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
     },
@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
     })
 })
 
-const PORT = 4000;
+const PORT = 443;
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 })
