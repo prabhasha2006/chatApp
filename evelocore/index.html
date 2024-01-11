@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./chatroom.css">
+    <link rel="stylesheet" href="./notification.css">
     <link rel="icon" href="./evelocoreLogo.png">
     <title id="title">EveloCore Chat</title>
 </head>
 <body>
+    <!--primary-notification-->
+    <div class="primary-notification">
+        <div class="primary-notification-contain">
+            <div class="primary-notification-img-box">
+                <img src="./media/primary-notification.png">
+            </div>
+            <div class="primary-notification-message-box">
+                <h2  id="primary-notification-head"><i class='fa fa-bell'></i> notification</h2>
+                <b id="primary-notification-text">Error!<br>No error found.</b>
+                <h3>
+                    <a id="primary-notification-cancel">close</a>
+                    <a id="primary-notification-got"> Open Chat</a>
+                </h3>
+            </div>
+        </div>
+    </div>
     <div class="menu menu-2">
         <div class="chatHeader">
             <img src="https://cdn-icons-png.flaticon.com/512/11498/11498793.png">
@@ -17,7 +34,7 @@
         <div class="chatBody"><br>
             <div class="messages holdingdMsg">
                 <div class="Content">
-                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V5.0</p>
                 </div>
             </div>
         </div>
@@ -96,6 +113,8 @@
                     }
                     chatSound.play()
                     //console.log('Received :', data.message);
+                }else{
+                    eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, '#55f', 3000)
                 }
             }
         })
@@ -122,6 +141,40 @@
                     title.innerHTML = listens.value.toUpperCase() + " ONLINE"
                 }
             });
+        }
+        //notify
+        const eveloCoreAlert = (msg,returnData,colour,duration) => {
+            duration = duration || 3000
+            var notificationContain = document.getElementsByClassName("primary-notification")[0]
+            if(!msg){
+                notificationContain.classList.remove("primary-notification-popup")
+                return
+            }
+            var notification = document.getElementById("primary-notification-text")
+            notification.innerHTML = msg
+            var notification = document.getElementById("primary-notification-head")
+            notification.style.color = colour
+            var notification = document.getElementById("primary-notification-got")
+            notification.style.color = colour
+            notification = document.getElementsByClassName("primary-notification-contain")[0]
+            notification.style.border = "4px solid "+colour
+            notification.style.borderLeft = "10px solid "+colour
+            //notification.style.boxShadow = "00 1px 5px 1px "+colour
+            notificationContain.classList.add("primary-notification-popup")
+            setTimeout(eveloCoreAlert,duration)
+            document.getElementById("primary-notification-cancel").addEventListener("click", ()=>{ eveloCorePrimaryAlert() })
+            document.getElementById("primary-notification-got").addEventListener("click", ()=>{ 
+                var textChat = document.getElementsByClassName("chatBody")[0]
+                textChat.innerHTML = `
+                <div class="messages holdingdMsg">
+                    <div class="Content">
+                    <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
+                    </div>
+                </div>`
+                messageInput.value = ""
+                listens.value = returnData
+                theirName.innerHTML = returnData
+             })
         }
     </script>
 </body>
