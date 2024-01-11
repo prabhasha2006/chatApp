@@ -11,6 +11,10 @@ const sendMessage = (msg) => {
         alert("Can't send empty messages!!!")
         return
     }
+    if(msg.length > 55000){
+        alert("Ooops! Big messages!!!")
+        return
+    }
     var textChat = document.getElementsByClassName("chatBody")[0]
     textChat.innerHTML += `
     <div class="messages sentMsg">
@@ -62,7 +66,6 @@ socket.on('client-message', (data) => {
                         <p>${data.message}</p>
                     </div>
                 </div>`
-                textChat.scrollTo(0, textChat.scrollHeight);
                 if(!onMonitoring){
                     unreads++
                     title.innerHTML = listens.value.toUpperCase() + " New (" +unreads+ ")"
@@ -74,6 +77,7 @@ socket.on('client-message', (data) => {
             }
         }
     }
+    textChat.scrollTo(0, textChat.scrollHeight);
     //console.log(data)
 })
 messageInput.addEventListener('keydown', (event) => {
