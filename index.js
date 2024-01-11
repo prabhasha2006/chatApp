@@ -5,12 +5,13 @@ const socketIO = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    cors: {
+      origin: 'http://localhost:4000',
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true,
+    },
+    transports: ["polling", "websocket"], // Enable WebSocket transport
 });
-
 /* app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 }); */
