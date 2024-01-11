@@ -34,6 +34,14 @@ const sendMessage = (msg) => {
     })
     chatSound.play()
 }
+const selectColor = (char) => {
+    if(char.match(/a|g|m|s|y|5/gi)){return "#00aeff"}
+    if(char.match(/b|h|n|t|z|6/gi)){return "#66ff00"}
+    if(char.match(/c|i|o|u|1|7/gi)){return "#ff5100"}
+    if(char.match(/d|j|p|v|2|8/gi)){return "#00ffbf"}
+    if(char.match(/e|k|q|w|3|9/gi)){return "#fbff00"}
+    if(char.match(/f|l|r|x|4|-/gi)){return "#ff00f2"}
+}
 socket.on('client-message', (data) => {
     if(onServer){
         if(!data.isOnServer){return}
@@ -45,7 +53,7 @@ socket.on('client-message', (data) => {
             textChat.innerHTML += `
             <div class="messages recievedMsg">
                 <div class="Content">
-                <h5>${data.from}</h5>
+                <h5 style="color: ${selectColor(data.from[0])}">${data.from}</h5>
                 <p>${data.message}</p>
                 </div>
             </div>`
@@ -130,7 +138,7 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
             </div>
         </div>
         <div class="messages recievedMsg">
@@ -165,7 +173,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
             </div>
         </div>
         <div class="messages holdingdMsg">
@@ -177,7 +185,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V4.9</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.2</p>
             </div>
         </div>`
     }
