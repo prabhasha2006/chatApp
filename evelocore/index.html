@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./chatroom.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="menu menu-2">
+        <div class="chatHeader">
+            <img src="https://cdn-icons-png.flaticon.com/512/11498/11498793.png">
+            <h2 id="theirName">Client's Name</h2>
+            <img class="signalImage" src="https://cdn-icons-png.flaticon.com/512/5655/5655457.png">
+        </div>
+        <div class="chatBody"><br>
+            <div class="messages holdingdMsg">
+                <div class="Content">
+                    <p>Continue your live conversation while playing...</p>
+                </div>
+            </div>
+            <!-- <div class="messages recievedMsg">
+                <div class="Content">
+                    <p>Hi</p>
+                </div>
+            </div>
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>Moko bn uba ehema kare?????</p>
+                </div>
+            </div>
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>Kiyapan</p>
+                </div>
+            </div>
+            <div class="messages recievedMsg">
+                <div class="Content">
+                    <p>Nikan<br>He he</p>
+                </div>
+            </div>
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>Ane yako</p>
+                </div>
+            </div>
+            <div class="messages recievedMsg">
+                <div class="Content">
+                    <p>Mn yakek nemei harithe</p>
+                </div>
+            </div>
+            <div class="messages recievedMsg">
+                <div class="Content">
+                    <p>Ennepa owata</p>
+                </div>
+            </div>
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>Yacai yacai</p>
+                </div>
+            </div> -->
+        </div>
+        <div class="chatControls">
+            <input type="text" id="messageInput" oninput="pressKeys(this.event)" placeholder="Send a message">
+            <a onclick="sendMessage(messageInput.value)">
+                <img src="https://cdn-icons-png.flaticon.com/512/10146/10146605.png" alt="">
+            </a>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td>
+                <label for="">Client</label>
+            </td>
+            <td>
+                <input type="text" id="listens" oninput="theirName.innerHTML = this.value">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="">You...</label>
+            </td>
+            <td>
+                <input type="text" id="emits">
+            </td>
+        </tr>
+    </table>
+    <!-- <input type="text" id="input">
+    <button onclick="sendMessage(input.value || 'Null Value')">Send</button>
+    <br><br> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:3000')
+        const sendMessage = (msg) => {
+            if(msg.replace(/ /gi,"").length == 0){
+                alert("Can't send empty messages!")
+                return
+            }
+            var textChat = document.getElementsByClassName("chatBody")[0]
+            textChat.innerHTML += `
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>${msg}</p>
+                </div>
+            </div>`
+            messageInput.value = ""
+            textChat.scrollTo(0, textChat.scrollHeight);
+            // Emit a custom event to the server
+            socket.emit('server-message', 
+            { 
+                message: msg,
+                from : emits.value || "a",
+                to: listens.value || "b"
+            })
+        }
+        socket.on('client-message', (data) => {
+            //console.log(data)
+            if(data.to === emits.value){
+                var textChat = document.getElementsByClassName("chatBody")[0]
+                textChat.innerHTML += `
+                <div class="messages recievedMsg">
+                    <div class="Content">
+                        <p>${data.message}</p>
+                    </div>
+                </div>`
+                messageInput.value = ""
+                textChat.scrollTo(0, textChat.scrollHeight);
+                console.log('Received :', data.message);
+            }
+        })
+    </script>
+</body>
+</html>
