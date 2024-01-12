@@ -283,6 +283,7 @@ let locationUrl = location.href
 locationUrl = new URL(locationUrl)
 if(locationUrl.searchParams.get("client")){
     listens.value = locationUrl.searchParams.get("client")
+    theirName.innerHTML = listens.value
     if(locationUrl.searchParams.get("on")){
         if(locationUrl.searchParams.get("on") === "server"){
             chatServerOpen()
