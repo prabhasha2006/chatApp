@@ -7,6 +7,7 @@ let chatSound = new Audio('./recieveOn.mp3')
 chatSound.volume = .3
 let onServer = false
 const socket = io()
+//
 const zero10 = (number) => {
     if(number < 10){
         return '0'+ number
@@ -221,7 +222,7 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.7</p>
             </div>
         </div>
         <div class="messages recievedMsg">
@@ -260,7 +261,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.7</p>
             </div>
         </div>
         <div class="messages holdingdMsg">
@@ -272,8 +273,20 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.7</p>
             </div>
         </div>`
     }
+}
+//
+let locationUrl = location.href
+locationUrl = new URL(locationUrl)
+if(locationUrl.searchParams.get("client")){
+    listens.value = locationUrl.searchParams.get("client")
+    if(locationUrl.searchParams.get("on")){
+        if(locationUrl.searchParams.get("on") === "server"){
+            chatServerOpen()
+        }
+    }
+}else{
 }
