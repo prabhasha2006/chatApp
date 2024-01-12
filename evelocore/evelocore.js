@@ -56,7 +56,9 @@ const selectColor = (char) => {
 socket.on('client-message', (data) => {
     if(onServer){
         if(!data.isOnServer){
-            eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, data.message, '#55f', 10000)
+            if(data.to === emits.value){
+                eveloCoreAlert("New Message From "+data.from.toUpperCase(), data.from, data.message, '#55f', 10000)
+            }
             return
         }
         if(data.to === listens.value){
