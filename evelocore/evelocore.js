@@ -14,6 +14,79 @@ const zero10 = (number) => {
         return number
     }
 }
+const bubble = (msg, sender, client) => {
+    var D = new Date()
+    if(!client){
+        if(msg.startsWith('web::')){
+            msg = msg.replace(/web::/gi,'').replace(/https:\/\/youtu.be|https:\/\/www.youtube.com\/watch\?v=|https:\/\/youtube.com\/shorts\//g, "https://www.youtube.com/embed/")
+            return `
+            <div class="messages ${sender}">
+                <div class="Content">
+                    <p>
+                        <iframe src="${msg}" frameborder="0"></iframe>
+                    </p>
+                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                </div>
+            </div>`
+        }else{
+            if(msg.startsWith('html::')){
+                msg = msg.replace(/html::/gi,'')
+                return `
+                <div class="messages ${sender}">
+                    <div class="Content">
+                        <p>${msg}</p>
+                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                    </div>
+                </div>`
+            }else{
+                msg = msg.replace(/\n/gi,'<br>').replace(/ /gi, '&nbsp;').replace(/</gi, '&lt;')
+                return `
+                <div class="messages ${sender}">
+                    <div class="Content">
+                        <p>${msg}</p>
+                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                    </div>
+                </div>`
+            }
+        }
+    }else{
+        if(msg.startsWith('web::')){
+            msg = msg.replace(/web::/gi,'').replace(/https:\/\/youtu.be|https:\/\/www.youtube.com\/watch\?v=|https:\/\/youtube.com\/shorts\//g, "https://www.youtube.com/embed/")
+            return `
+            <div class="messages ${sender}">
+                <div class="Content">
+                    <h5 style="color: ${selectColor(client[0])}">${client}</h5>
+                    <p>
+                        <iframe src="${msg}" frameborder="0"></iframe>
+                    </p>
+                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                </div>
+            </div>`
+        }else{
+            if(msg.startsWith('html::')){
+                msg = msg.replace(/html::/gi,'')
+                return `
+                <div class="messages ${sender}">
+                    <div class="Content">
+                        <h5 style="color: ${selectColor(client[0])}">${client}</h5>
+                        <p>${msg}</p>
+                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                    </div>
+                </div>`
+            }else{
+                msg = msg.replace(/\n/gi,'<br>').replace(/ /gi, '&nbsp;').replace(/</gi, '&lt;')
+                return `
+                <div class="messages ${sender}">
+                    <div class="Content">
+                        <h5 style="color: ${selectColor(client[0])}">${client}</h5>
+                        <p>${msg}</p>
+                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                    </div>
+                </div>`
+            }
+        }
+    }
+}
 const sendMessage = (msg) => {
     if(msg.replace(/ /gi,"").length == 0){
         alert("Can't send empty messages!!!")
@@ -23,40 +96,8 @@ const sendMessage = (msg) => {
         alert("Ooops! Big messages!!!")
         return
     }
-    var D = new Date()
     var textChat = document.getElementsByClassName("chatBody")[0]
-    if(msg.startsWith(/web::/gi)){
-        msg = msg.replace(/web::/gi,'').replace(/https:\/\/youtu.be|https:\/\/www.youtube.com\/watch\?v=|https:\/\/youtube.com\/shorts\//g, "https://www.youtube.com/embed/")
-        textChat.innerHTML += `
-        <div class="messages sentMsg">
-            <div class="Content">
-                <p>
-                    <iframe src="${msg}" frameborder="0"></iframe>
-                </p>
-                <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-            </div>
-        </div>`
-    }else{
-        if(msg.startsWith(/html::/gi)){
-            msg = msg.replace(/html::/gi,'')
-            textChat.innerHTML += `
-            <div class="messages sentMsg">
-                <div class="Content">
-                    <p>${msg}</p>
-                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-                </div>
-            </div>`
-        }else{
-            msg = msg.replace(/\n/gi,'<br>').replace(/ /gi, '&nbsp;').replace(/</gi, '&lt;')
-            textChat.innerHTML += `
-            <div class="messages sentMsg">
-                <div class="Content">
-                    <p>${msg}</p>
-                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-                </div>
-            </div>`
-        }
-    }
+    textChat.innerHTML += bubble(msg, 'sentMsg')
     messageInput.value = ""
     textChat.scrollTo(0, textChat.scrollHeight);
     // Emit a custom event to the server
@@ -91,14 +132,7 @@ socket.on('client-message', (data) => {
             }
             var D = new Date()
             var textChat = document.getElementsByClassName("chatBody")[0]
-            textChat.innerHTML += `
-            <div class="messages recievedMsg">
-                <div class="Content">
-                <h5 style="color: ${selectColor(data.from[0])}">${data.from}</h5>
-                <p>${data.message}</p>
-                <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-                </div>
-            </div>`
+            textChat.innerHTML += bubble(data.message, 'recievedMsg', data.from)
             if(!onMonitoring){
                 unreads++
                 title.innerHTML = listens.value.toUpperCase() + " Server (" +unreads+ ")"
@@ -111,13 +145,7 @@ socket.on('client-message', (data) => {
             if(data.from === listens.value){
                 var D = new Date()
                 var textChat = document.getElementsByClassName("chatBody")[0]
-                textChat.innerHTML += `
-                <div class="messages recievedMsg">
-                    <div class="Content">
-                        <p>${data.message}</p>
-                        <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-                    </div>
-                </div>`
+                textChat.innerHTML += bubble(data.message, 'recievedMsg')
                 if(!onMonitoring){
                     unreads++
                     title.innerHTML = listens.value.toUpperCase() + " New (" +unreads+ ")"
@@ -214,10 +242,12 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
 const chatServerOpen = (btn) => {
     btn = document.getElementById("chatServerOpenBtn")
     if(!onServer){
+        dp.src = "https://cdn-icons-png.flaticon.com/512/1256/1256650.png"
         btn.innerText = "Join A Personal Chat"
         serverLabel.innerHTML = "Server"
         onServer = true
     }else{
+        dp.src = "https://cdn-icons-png.flaticon.com/512/11498/11498793.png"
         btn.innerText = "Join A Chat Server"
         serverLabel.innerHTML = "Client"
         onServer = false
