@@ -23,16 +23,40 @@ const sendMessage = (msg) => {
         alert("Ooops! Big messages!!!")
         return
     }
-    msg = msg.replace(/\n/gi,'<br>')
     var D = new Date()
     var textChat = document.getElementsByClassName("chatBody")[0]
-    textChat.innerHTML += `
-    <div class="messages sentMsg">
-        <div class="Content">
-            <p>${msg}</p>
-            <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
-        </div>
-    </div>`
+    if(msg.startsWith(/web::/gi)){
+        msg = msg.replace(/web::/gi,'').replace(/https:\/\/youtu.be|https:\/\/www.youtube.com\/watch\?v=|https:\/\/youtube.com\/shorts\//g, "https://www.youtube.com/embed/")
+        textChat.innerHTML += `
+        <div class="messages sentMsg">
+            <div class="Content">
+                <p>
+                    <iframe src="${msg}" frameborder="0"></iframe>
+                </p>
+                <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+            </div>
+        </div>`
+    }else{
+        if(msg.startsWith(/html::/gi)){
+            msg = msg.replace(/html::/gi,'')
+            textChat.innerHTML += `
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>${msg}</p>
+                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                </div>
+            </div>`
+        }else{
+            msg = msg.replace(/\n/gi,'<br>').replace(/ /gi, '&nbsp;').replace(/</gi, '&lt;')
+            textChat.innerHTML += `
+            <div class="messages sentMsg">
+                <div class="Content">
+                    <p>${msg}</p>
+                    <h4>${zero10(D.getHours())} : ${zero10(D.getMinutes())}</h4>
+                </div>
+            </div>`
+        }
+    }
     messageInput.value = ""
     textChat.scrollTo(0, textChat.scrollHeight);
     // Emit a custom event to the server
@@ -169,7 +193,7 @@ const eveloCoreAlert = (msg,returnData,returnMessage,colour,duration) => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
             </div>
         </div>
         <div class="messages recievedMsg">
@@ -206,7 +230,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
             </div>
         </div>
         <div class="messages holdingdMsg">
@@ -218,7 +242,7 @@ const enterChat = () => {
         textChat.innerHTML = `
         <div class="messages holdingdMsg">
             <div class="Content">
-            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.5</p>
+            <p>Fast chat app with web socket by <b>Kumuthu Prabhasha.</b> V6.6</p>
             </div>
         </div>`
     }

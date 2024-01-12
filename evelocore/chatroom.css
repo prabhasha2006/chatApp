@@ -143,6 +143,10 @@ p {
     text-align: right;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.chatBody .messages .Content iframe {
+    height: 300px;
+    border-radius: 10px;
+}
 .chatBody .holdingdMsg {
     display: flex;
     justify-content: center;
